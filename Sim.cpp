@@ -17,9 +17,8 @@
 */
 //==============================================================================
 
-#include <boost/random/mersenne_twister.hpp>
-#include <boost/random/uniform_int_distribution.hpp>
-#include <boost/foreach.hpp>
+#include <iostream>
+#include <random>
 
 #include "Core.h"
 
@@ -62,7 +61,7 @@ void Node::receiveMessage(const Message& m, Network& network)
     ++messages_received;
 
     // If we were going to send any of this data to that node, skip it
-    BOOST_FOREACH(Link& link, links)
+    for (Link& link : links)
     {
         if ((link.to_node == m.from_node) && (link.lm_send_time >= network.master_time))
         {
@@ -92,7 +91,7 @@ void Node::receiveMessage(const Message& m, Network& network)
 
     // 2) Choose our position change, if any
     int unl_count = 0, unl_balance = 0;
-    BOOST_FOREACH(int node, unl)
+    for (int node : unl)
     {
         if (knowledge[node] == 1)
         {
@@ -137,7 +136,7 @@ void Node::receiveMessage(const Message& m, Network& network)
     }
 
     // 3) Broadcast the message
-    BOOST_FOREACH(Link& link, links)
+    for (Link& link : links)
     {
         if (pos_change || (link.to_node != m.from_node))
         {
@@ -166,11 +165,11 @@ int main(void)
 {
 
     // This will produce the same results each time
-    boost::random::mt19937 gen;
-    boost::random::uniform_int_distribution<> r_e2c(MIN_E2C_LATENCY, MAX_E2C_LATENCY);
-    boost::random::uniform_int_distribution<> r_c2c(MIN_C2C_LATENCY, MAX_C2C_LATENCY);
-    boost::random::uniform_int_distribution<> r_unl(UNL_MIN, UNL_MAX);
-    boost::random::uniform_int_distribution<> r_node(0, NUM_NODES-1);
+    std::mt19937 gen;
+    std::uniform_int_distribution<> r_e2c(MIN_E2C_LATENCY, MAX_E2C_LATENCY);
+    std::uniform_int_distribution<> r_c2c(MIN_C2C_LATENCY, MAX_C2C_LATENCY);
+    std::uniform_int_distribution<> r_unl(UNL_MIN, UNL_MAX);
+    std::uniform_int_distribution<> r_node(0, NUM_NODES-1);
 
     Node* nodes[NUM_NODES];
 
@@ -233,7 +232,7 @@ int main(void)
     std::cerr << "Creating initial messages" << std::endl;
     for (int i = 0; i < NUM_NODES; ++i)
     {
-        BOOST_FOREACH(Link& l, nodes[i]->links)
+        for (Link& l : nodes[i]->links)
         {
             Message m(i, l.to_node);
             m.data.insert(std::make_pair(i, NodeState(i, 1, nodes[i]->knowledge[i])));
@@ -262,7 +261,7 @@ int main(void)
                 nodes_positive << "/" << nodes_negative <<  std::endl;
         network.master_time = ev->first;
 
-        BOOST_FOREACH(const Message& m, ev->second.messages)
+        for (const Message& m : ev->second.messages)
         {
             if (m.data.empty()) // message was never sent
                 --nodes[m.from_node]->messages_sent;

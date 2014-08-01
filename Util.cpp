@@ -17,10 +17,6 @@
 */
 //==============================================================================
 
-#include <iostream>
-
-#include <boost/foreach.hpp>
-
 #include "Core.h"
 
 void Message::addPositions(const std::map<int, NodeState>& update)
@@ -34,7 +30,7 @@ void Message::addPositions(const std::map<int, NodeState>& update)
             // don't tell a node about itself
             std::map<int, NodeState>::iterator message_iterator=data.find(update_iterator->first);
 
-            if(message_iterator->first)
+            if(message_iterator != data.end() && message_iterator->first)
             {
                 // we already had data about this node going in this message
                 if (update_iterator->second.ts > message_iterator->second.ts)

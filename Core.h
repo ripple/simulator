@@ -26,8 +26,6 @@
 #include <map>
 #include <cassert>
 
-#include <boost/foreach.hpp>
-
 class NodeState
 {
     // A NodeState as propagated by the network
@@ -112,14 +110,14 @@ public:
 
     bool isOnUNL(int j)
     {
-        BOOST_FOREACH (int v, unl)
+        for (int v : unl)
             if (v==j) return true;
         return false;
     }
 
     bool hasLinkTo(int j)
     {
-        BOOST_FOREACH (const Link& l, links)
+        for (const Link& l : links)
             if (l.to_node==j) return true;
         return false;
     }
