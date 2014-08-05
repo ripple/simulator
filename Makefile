@@ -6,15 +6,9 @@ CXX=g++ -Wall -Wno-sign-compare -Wno-char-subscripts
 
 DEFS=
 
-LIBS= \
-   -pthread \
-   -l boost_system-mt \
-   -l boost_filesystem-mt \
-   -l boost_program_options-mt \
-   -l boost_thread-mt \
-
+LIBS= -pthread
 DEBUGFLAGS=-DDEBUG -g
-CXXFLAGS=-O0 -march=core2 -Wno-invalid-offsetof -Wformat $(DEBUGFLAGS) $(DEFS)
+CXXFLAGS=-O0 -march=core2 -Wno-invalid-offsetof -Wformat $(DEBUGFLAGS) $(DEFS) -std=c++11
 HEADERS = Core.h
 
 SRCS= Sim.cpp Util.cpp
