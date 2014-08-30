@@ -2,18 +2,16 @@
 # Distributed under the MIT/X11 software license, see the accompanying
 # file license.txt or http://www.opensource.org/licenses/mit-license.php.
 
-CXX=g++ -Wall -Wno-sign-compare -Wno-char-subscripts
+DEFS       =
+LIBS       = -pthread
+DEBUGFLAGS = -DDEBUG -g
+CXXFLAGS   = -O0 -std=c++11 -Wall -Wno-sign-compare -Wno-char-subscripts \
+             -Wno-invalid-offsetof -Wformat $(DEBUGFLAGS) $(DEFS)
+HEADERS    = Core.h
 
-DEFS=
+SRCS       = Sim.cpp Util.cpp
 
-LIBS= -pthread
-DEBUGFLAGS=-DDEBUG -g
-CXXFLAGS=-O0 -march=core2 -Wno-invalid-offsetof -Wformat $(DEBUGFLAGS) $(DEFS) -std=c++11
-HEADERS = Core.h
-
-SRCS= Sim.cpp Util.cpp
-
-OBJS= $(SRCS:%.cpp=%.o)
+OBJS       = $(SRCS:%.cpp=%.o)
 
 all: sim
 
